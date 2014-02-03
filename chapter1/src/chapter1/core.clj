@@ -96,13 +96,115 @@
 (defn sqrt-iter
   [guess x]
   (if (good-enough? guess x)
-      guess
-      (sqrt-iter (improve guess x)
-                 x)))
+    guess
+    (sqrt-iter (improve guess x)
+               x)))
 
 (defn sqrt
   [x]
   (sqrt-iter 1.0 x))
+
+
+;;EXERCISE 1.6
+(defn new-if
+  [predicate then-clause else-clause]
+  (cond predicate then-clause
+        :else else-clause))
+
+(new-if (= 2 3) 0 5)
+;; 5
+
+(new-if (= 1 1) 0 5)
+;; 0
+
+(defn sqrt-iter
+  [guess x]
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x)
+                     x)))
+;; StackOverflowError
+
+
+;; EXERCISE 1.7
+(defn sqrt-iter
+  [guess x]
+  (if (good-enough? guess x)
+    guess
+    (sqrt-iter (improve guess x)
+               x)))
+
+(sqrt 0.0001)
+;; 0.03230844...
+
+(defn good-enough?
+  [guess x last-guess]
+  (< (abs (- guess last-guess)) 0.001))
+
+(defn average
+  [x y]
+  (/ (+ x y) 2))
+
+(defn improve
+  [guess x]
+  (average guess (/ x guess)))
+
+(defn sqrt-iter
+  [guess x last-guess]
+  (if (good-enough? guess x last-guess)
+    guess
+    (sqrt-iter (improve guess x)
+               x
+               guess)))
+
+(defn sqrt
+  [x]
+  (sqrt-iter 1.0 x x))
+
+(sqrt 0.0001)
+;; 0.010000...
+
+
+;; EXERCISE 1.8
+
+(defn improve
+  [guess x]
+  (/ (+ (/ x (square guess)) (* 2 guess)) 3))
+
+(defn cube-root-iter
+  [guess x last-guess]
+  (if (good-enough? guess x last-guess)
+    guess
+    (cube-root-iter (improve guess x)
+                    x
+                    guess)))
+
+(defn cube-root
+  [x]
+  (cube-root-iter 1.0 x x))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
